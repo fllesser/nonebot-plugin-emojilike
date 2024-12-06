@@ -48,7 +48,7 @@ async def _(bot: Bot, event: GroupMessageEvent):
         await bot.call_api("set_msg_emoji_like", message_id = event.message_id, emoji_id = '38')
 
 
-sub_like_set: set[int] = {}
+sub_like_set: set[int] = {1}
 sub_list_file = "sub_list.json"
 
 @get_driver().on_startup
@@ -58,7 +58,7 @@ async def _():
         data_file.write_text(json.dumps([]))
     global sub_like_set
     sub_like_set = set(json.loads(data_file.read_text()))
-    logger.info(f"每日赞/超列表: [{','.join(sub_like_set)}]")
+    logger.info(f"每日赞列表: [{','.join(map(str, sub_like_set))}]")
 
 @sub_card_like.handle()
 async def _(bot: Bot, event: MessageEvent):
