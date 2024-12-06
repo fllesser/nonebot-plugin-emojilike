@@ -22,7 +22,7 @@ __plugin_meta__ = PluginMetadata(
 )
 
 
-def contain_face(event: MessageEvent) -> bool:
+def contain_face(event: GroupMessageEvent) -> bool:
     return any(seg.type == "face" for seg in event.get_message())
 
 emojilike = on_message(rule=Rule(contain_face))
@@ -30,7 +30,7 @@ cardlike = on_command(cmd="赞我")
 sub_card_like = on_command(cmd="天天赞我")
 
 @emojilike.handle()
-async def _(bot: Bot, event: MessageEvent):
+async def _(bot: Bot, event: GroupMessageEvent):
     msg = event.get_message()
     face_id_list = [seg.data.get('id') for seg in msg if seg.type == "face"]
     for id in face_id_list:
@@ -38,7 +38,7 @@ async def _(bot: Bot, event: MessageEvent):
             await bot.call_api("set_msg_emoji_like", message_id = event.message_id, emoji_id = id)
 
 @cardlike.handle()
-async def _(bot: Bot, event: MessageEvent):
+async def _(bot: Bot, event: GroupMessageEvent):
     id_set = {'76', '66', '63', '201', '10024'}
     try:
         for _ in range(5):
