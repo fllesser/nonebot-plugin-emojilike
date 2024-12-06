@@ -22,7 +22,7 @@ __plugin_meta__ = PluginMetadata(
 )
 
 
-def contain_face(event: MessageEvent) -> bool:
+def contain_face(event: GroupMessageEvent) -> bool:
     return any(seg.type == "face" for seg in event.get_message())
 
 emojilike = on_message(rule=Rule(contain_face))
