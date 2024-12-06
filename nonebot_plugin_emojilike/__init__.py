@@ -5,6 +5,7 @@ from nonebot.plugin import PluginMetadata
 from nonebot.rule import Rule
 from nonebot.adapters import Bot as BaseBot
 from nonebot.adapters.onebot.v11 import Bot, MessageEvent, GroupMessageEvent
+from nonebot.adapters.onebot.v11.permission import GROUP
 from .face import msg_emoji_id_set
 
 require("nonebot_plugin_localstore")
@@ -25,9 +26,9 @@ __plugin_meta__ = PluginMetadata(
 def contain_face(event: GroupMessageEvent) -> bool:
     return any(seg.type == "face" for seg in event.get_message())
 
-emojilike = on_message(rule=Rule(contain_face))
-cardlike = on_command(cmd="赞我")
-sub_card_like = on_command(cmd="天天赞我")
+emojilike = on_message(rule=Rule(contain_face), permission=GROUP)
+cardlike = on_command(cmd="赞我", permission=GROUP)
+sub_card_like = on_command(cmd="天天赞我", permission=GROUP)
 
 @emojilike.handle()
 async def _(bot: Bot, event: GroupMessageEvent):
