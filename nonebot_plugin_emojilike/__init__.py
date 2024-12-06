@@ -43,7 +43,7 @@ async def _(bot: Bot, event: GroupMessageEvent):
     try:
         for _ in range(5):
             await bot.send_like(user_id = event.get_user_id(), times = 10)
-            await bot.call_api("set_msg_emoji_like", message_id = event.message_id, emoji_id = next(iter(id_set)))
+            await bot.call_api("set_msg_emoji_like", message_id = event.message_id, emoji_id = id_set.pop())
     except Exception as _:
         await bot.call_api("set_msg_emoji_like", message_id = event.message_id, emoji_id = '38')
 
