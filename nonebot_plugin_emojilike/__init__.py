@@ -13,7 +13,7 @@ from nonebot_plugin_apscheduler import scheduler
 import nonebot_plugin_localstore as store
 
 __plugin_meta__ = PluginMetadata(
-    name="链接分享解析器重制版",
+    name="名片赞，表情回应插件",
     description="nonebot2 名片赞，表情回应插件",
     usage="赞我，超我，发送带表情的消息",
     type="application",
