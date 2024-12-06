@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "nonebot-plugin-emojilike"
+version = "0.0.1"
+description = "nonebot2 名片赞，表情回应插件"
+authors = ["fllesser <fllessive@gmail.com>"]
+readme = "README.md"
+packages = [{include = "nonebot_plugin_emojilike"}]
+repository = "https://github.com/fllesser/nonebot-plugin-emojilike"
+keywords = ["nonebot", "nonebot2", "emoji", "like"]
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+nonebot2 = ">=2.3.0"
+nonebot-adapter-onebot = "*"
+nonebot_plugin_localstore = ">=0.6.0"
+nonebot-plugin-apscheduler = ">=0.5.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
