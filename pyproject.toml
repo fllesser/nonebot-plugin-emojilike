@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot-plugin-emojilike"
-version = "0.0.1"
+version = "0.0.2"
 description = "nonebot2 名片赞，表情回应插件"
 authors = ["fllesser <fllessive@gmail.com>"]
 readme = "README.md"

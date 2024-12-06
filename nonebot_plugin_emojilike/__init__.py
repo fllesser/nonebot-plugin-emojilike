@@ -4,7 +4,7 @@ from nonebot import logger, require, on_command, on_message, get_driver, get_bot
 from nonebot.plugin import PluginMetadata
 from nonebot.rule import Rule
 from nonebot.adapters import Bot as BaseBot
-from nonebot.adapters.onebot.v11 import Bot, MessageEvent
+from nonebot.adapters.onebot.v11 import Bot, MessageEvent, GroupMessageEvent
 from .face import msg_emoji_id_set
 
 require("nonebot_plugin_localstore")
@@ -30,7 +30,7 @@ cardlike = on_command(cmd=("赞我", "超我"))
 sub_card_like = on_command(cmd=("天天赞我", "天天超我"))
 
 @emojilike.handle()
-async def _(bot: Bot, event: MessageEvent):
+async def _(bot: Bot, event: GroupMessageEvent):
     msg = event.get_message()
     face_id_list = [seg.data.get('id') for seg in msg if seg.type == "face"]
     for id in face_id_list:
@@ -38,7 +38,7 @@ async def _(bot: Bot, event: MessageEvent):
             await bot.call_api("set_msg_emoji_like", message_id = event.message_id, emoji_id = id)
 
 @cardlike.handle()
-async def _(bot: Bot, event: MessageEvent):
+async def _(bot: Bot, event: GroupMessageEvent):
     id_set = {'76', '66', '63', '201', '10024'}
     try:
         for _ in range(5):
@@ -65,6 +65,7 @@ async def _(bot: Bot, event: MessageEvent):
     sub_like_set.add(event.user_id)
     data_file = store.get_plugin_data_file(sub_list_file)
     data_file.write_text(json.dumps(list(sub_like_set)))
+    await bot.call_api("set_msg_emoji_like", message_id = event.message_id, emoji_id = '424')
 
 
 @scheduler.scheduled_job(
