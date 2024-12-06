@@ -15,22 +15,22 @@ import nonebot_plugin_localstore as store
 __plugin_meta__ = PluginMetadata(
     name="名片赞，表情回应插件",
     description="nonebot2 名片赞，表情回应插件",
-    usage="赞我，超我，发送带表情的消息",
+    usage="赞我, 发送带表情的消息",
     type="application",
     homepage="https://github.com/fllesser/nonebot-plugin-emojilike",
     supported_adapters={ "~onebot.v11" }
 )
 
 
-def contain_face(event: GroupMessageEvent) -> bool:
+def contain_face(event: MessageEvent) -> bool:
     return any(seg.type == "face" for seg in event.get_message())
 
 emojilike = on_message(rule=Rule(contain_face))
-cardlike = on_command(cmd=("赞我", "超我"))
-sub_card_like = on_command(cmd=("天天赞我", "天天超我"))
+cardlike = on_command(cmd="赞我")
+sub_card_like = on_command(cmd="天天赞我")
 
 @emojilike.handle()
-async def _(bot: Bot, event: GroupMessageEvent):
+async def _(bot: Bot, event: MessageEvent):
     msg = event.get_message()
     face_id_list = [seg.data.get('id') for seg in msg if seg.type == "face"]
     for id in face_id_list:
@@ -38,7 +38,7 @@ async def _(bot: Bot, event: GroupMessageEvent):
             await bot.call_api("set_msg_emoji_like", message_id = event.message_id, emoji_id = id)
 
 @cardlike.handle()
-async def _(bot: Bot, event: GroupMessageEvent):
+async def _(bot: Bot, event: MessageEvent):
     id_set = {'76', '66', '63', '201', '10024'}
     try:
         for _ in range(5):
@@ -70,8 +70,8 @@ async def _(bot: Bot, event: MessageEvent):
 
 @scheduler.scheduled_job(
     "cron",
-    hour=20,
-    minute=7,
+    hour=8,
+    minute=0,
 )
 async def _():
     bots: dict[str, BaseBot] = get_bots()
