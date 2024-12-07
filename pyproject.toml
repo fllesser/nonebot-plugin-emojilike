@@ -12,7 +12,7 @@ keywords = ["nonebot", "nonebot2", "emoji", "like"]
 python = ">=3.9"
 nonebot2 = ">=2.3.0"
 nonebot-adapter-onebot = "*"
-nonebot_plugin_localstore = ">=0.6.0"
+nonebot_plugin_localstore = ">=0.7.0"
 nonebot-plugin-apscheduler = ">=0.5.0"
 
 [build-system]
