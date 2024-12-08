@@ -28,7 +28,7 @@ def contain_face(event: GroupMessageEvent) -> bool:
     msg = event.get_message()
     return (
         any(seg.type == 'face' for seg in msg) or
-        any(char in emoji.UNICODE_EMOJI['en'] for char in msg.extract_plain_text().strip())
+        any(char in emoji.EMOJI_DATA for char in msg.extract_plain_text().strip())
     )
 
 emojilike = on_message(rule=Rule(contain_face), permission=GROUP)
@@ -39,7 +39,7 @@ sub_card_like = on_command(cmd="天天赞我", permission=GROUP)
 async def _(bot: Bot, event: GroupMessageEvent):
     msg = event.get_message()
     msg_emoji_id_set: set[int] = {
-        int(seg.data.get('id')) for seg in msg if seg.type == "face"} | {ord(char) for char in msg.extract_plain_text().strip() if char in emoji.UNICODE_EMOJI['en']
+        int(seg.data.get('id')) for seg in msg if seg.type == "face"} | {ord(char) for char in msg.extract_plain_text().strip() if char in emoji.EMOJI_DATA
         }
     for id in msg_emoji_id_set:
         if id in emoji_like_id_set:
