@@ -1,4 +1,5 @@
 import json
+import emoji
 
 from nonebot import logger, require, on_command, on_message, get_driver, get_bots
 from nonebot.plugin import PluginMetadata
@@ -6,7 +7,7 @@ from nonebot.rule import Rule
 from nonebot.adapters import Bot as BaseBot
 from nonebot.adapters.onebot.v11 import Bot, MessageEvent, GroupMessageEvent
 from nonebot.adapters.onebot.v11.permission import GROUP
-from .face import msg_emoji_id_set
+from .face import emoji_like_id_set
 
 require("nonebot_plugin_localstore")
 require("nonebot_plugin_apscheduler")
@@ -24,7 +25,11 @@ __plugin_meta__ = PluginMetadata(
 
 
 def contain_face(event: GroupMessageEvent) -> bool:
-    return any(seg.type == "face" for seg in event.get_message())
+    msg = event.get_message()
+    return (
+        any(seg.type == 'face' for seg in msg) or
+        any(char in emoji.UNICODE_EMOJI['en'] for char in msg.extract_plain_text().strip())
+    )
 
 emojilike = on_message(rule=Rule(contain_face), permission=GROUP)
 cardlike = on_command(cmd="赞我", permission=GROUP)
@@ -33,9 +38,11 @@ sub_card_like = on_command(cmd="天天赞我", permission=GROUP)
 @emojilike.handle()
 async def _(bot: Bot, event: GroupMessageEvent):
     msg = event.get_message()
-    face_id_list = [seg.data.get('id') for seg in msg if seg.type == "face"]
-    for id in face_id_list:
-        if id in msg_emoji_id_set:
+    msg_emoji_id_set: set[int] = {
+        int(seg.data.get('id')) for seg in msg if seg.type == "face"} | {ord(char) for char in msg.extract_plain_text().strip() if char in emoji.UNICODE_EMOJI['en']
+        }
+    for id in msg_emoji_id_set:
+        if id in emoji_like_id_set:
             await bot.call_api("set_msg_emoji_like", message_id = event.message_id, emoji_id = id)
 
 @cardlike.handle()
