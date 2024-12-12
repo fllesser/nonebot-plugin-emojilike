@@ -31,7 +31,7 @@ def contain_face(event: GroupMessageEvent) -> bool:
         any(char in emoji.EMOJI_DATA for char in msg.extract_plain_text().strip())
     )
 
-emojilike = on_message(rule=Rule(contain_face), permission=GROUP)
+emojilike = on_message(rule=Rule(contain_face), permission=GROUP, block=False, priority=999)
 cardlike = on_command(cmd="赞我", permission=GROUP)
 sub_card_like = on_command(cmd="天天赞我", permission=GROUP)
 
