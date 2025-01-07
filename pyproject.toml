@@ -22,8 +22,7 @@ nonebot2 = {version = "^2.4.0", extras = ["fastapi"]}
 
 [tool.nonebot]
 adapters = [{name="OnebotAdapterV11", module_name="nonebot.adapters.onebot.v11"}]
-plugins = ["nonebot_plugin_resolver2"]
-
+plugins = ["nonebot_plugin_emojilike"]
 
 [build-system]
 requires = ["poetry-core"]
