@@ -1,11 +1,23 @@
 import json
 import emoji
 
-from nonebot import logger, require, on_command, on_message, get_driver, get_bots
+from nonebot import (
+    logger,
+    require,
+    get_driver,
+    get_bots
+)
 from nonebot.plugin import PluginMetadata
+from nonebot.plugin.on import (
+    on_command,
+    on_message,
+)
 from nonebot.rule import Rule
-from nonebot.adapters import Bot as BaseBot
-from nonebot.adapters.onebot.v11 import Bot, MessageEvent, GroupMessageEvent
+from nonebot.adapters.onebot.v11 import (
+    Bot, 
+    MessageEvent, 
+    GroupMessageEvent
+)
 from nonebot.adapters.onebot.v11.permission import GROUP
 from .face import emoji_like_id_set
 
@@ -31,9 +43,22 @@ def contain_face(event: GroupMessageEvent) -> bool:
         any(char in emoji.EMOJI_DATA for char in msg.extract_plain_text().strip())
     )
 
-emojilike = on_message(rule=Rule(contain_face), permission=GROUP, block=False, priority=999)
-cardlike = on_command(cmd="赞我", permission=GROUP)
-sub_card_like = on_command(cmd="天天赞我", permission=GROUP)
+emojilike = on_message(
+    rule=Rule(contain_face),
+    permission=GROUP,
+    block=False,
+    priority=999
+)
+cardlike = on_command(
+    cmd="赞我",
+    aliases={'草我'},
+    permission=GROUP
+ )
+sub_card_like = on_command(
+    cmd="天天赞我",
+    aliases={'天天草我'},
+    permission=GROUP
+)
 
 @emojilike.handle()
 async def _(bot: Bot, event: GroupMessageEvent):
@@ -80,16 +105,17 @@ async def _(bot: Bot, event: MessageEvent):
     "cron",
     hour=8,
     minute=0,
+    id='sub_card_like'
 )
 async def _():
-    bots: dict[str, BaseBot] = get_bots()
-    if not bots or len(bots) == 0:
+    bots = get_bots()
+    bots = [b for b in bots.values if isinstance(bot, Bot)]
+    if not bots:
         return
-    for _, bot in bots:
-        if isinstance(bot, Bot):
-            for user_id in sub_like_set:
-                try:
-                    for _ in range(5):
-                        await bot.send_like(user_id = user_id, times = 10)
-                except Exception as _:
-                    continue
+    for bot in bots:
+        for user_id in sub_like_set:
+            try:
+                for _ in range(5):
+                    await bot.send_like(user_id = user_id, times = 10)
+            except Exception:
+                continue
