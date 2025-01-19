@@ -23,8 +23,8 @@ from .face import emoji_like_id_set
 
 require("nonebot_plugin_localstore")
 require("nonebot_plugin_apscheduler")
-from nonebot_plugin_apscheduler import scheduler
-import nonebot_plugin_localstore as store
+from nonebot_plugin_apscheduler import scheduler  # noqa: E402
+import nonebot_plugin_localstore as store  # noqa: E402
 
 __plugin_meta__ = PluginMetadata(
     name="名片赞，表情回应插件",
@@ -109,7 +109,7 @@ async def _(bot: Bot, event: MessageEvent):
 )
 async def _():
     bots = get_bots()
-    bots = [b for b in bots.values if isinstance(bot, Bot)]
+    bots = [bot for bot in bots.values if isinstance(bot, Bot)]
     if not bots:
         return
     for bot in bots:
