@@ -34,18 +34,13 @@ def contain_face(event: GroupMessageEvent) -> bool:
     )
 
 
-emojilike = on_message(
+@on_message(
     rule=Rule(contain_face), permission=GROUP, block=False, priority=999
-)
-cardlike = on_command(cmd="赞我", aliases={"草我"}, permission=GROUP)
-sub_card_like = on_command(cmd="天天赞我", aliases={"天天草我"}, permission=GROUP)
-
-
-@emojilike.handle()
+).handle()
 async def _(bot: Bot, event: GroupMessageEvent):
     msg = event.get_message()
     msg_emoji_id_set: set[int] = {
-        int(seg.data.get("id")) for seg in msg if seg.type == "face"
+        int(seg.data["id"]) for seg in msg if seg.type == "face"
     } | {
         ord(char)
         for char in msg.extract_plain_text().strip()
@@ -58,12 +53,12 @@ async def _(bot: Bot, event: GroupMessageEvent):
             )
 
 
-@cardlike.handle()
+@on_command(cmd="赞我", aliases={"草我"}, permission=GROUP).handle()
 async def _(bot: Bot, event: GroupMessageEvent):
     id_set = {"76", "66", "63", "201", "10024"}
     try:
         for _ in range(5):
-            await bot.send_like(user_id=event.get_user_id(), times=10)
+            await bot.send_like(user_id=event.user_id, times=10)
             await bot.call_api(
                 "set_msg_emoji_like", message_id=event.message_id, emoji_id=id_set.pop()
             )
@@ -87,7 +82,7 @@ async def _():
     logger.info(f"每日赞列表: [{','.join(map(str, sub_like_set))}]")
 
 
-@sub_card_like.handle()
+@on_command(cmd="天天赞我", aliases={"天天草我"}, permission=GROUP).handle()
 async def _(bot: Bot, event: MessageEvent):
     sub_like_set.add(event.user_id)
     data_file = store.get_plugin_data_file(sub_list_file)
@@ -99,8 +94,8 @@ async def _(bot: Bot, event: MessageEvent):
 
 @scheduler.scheduled_job("cron", hour=8, minute=0, id="sub_card_like")
 async def _():
-    bots = get_bots()
-    bots = [bot for bot in bots.values if isinstance(bot, Bot)]
+    # 取 instance Bot
+    bots = [bot for bot in get_bots().values() if isinstance(bot, Bot)]
     if not bots:
         return
     for bot in bots:
