@@ -1,3 +1,4 @@
+from nonebot import logger
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message, MessageSegment
 from nonebug import App
 import pytest
@@ -41,5 +42,7 @@ async def test_emojilike(app: App):
         bot = ctx.create_bot(base=Bot, adapter=adapter)
         ctx.receive_event(bot, event)
         ctx.should_call_api("set_msg_emoji_like", data={"message_id": 12345678, "emoji_id": 144})
+        logger.success("call api | set_msg_emoji_like emoji_id=144")
         ctx.should_call_api("set_msg_emoji_like", data={"message_id": 12345678, "emoji_id": ord("❔")})
+        logger.success(f"call api | set_msg_emoji_like emoji_id={ord('❔')}")
         ctx.should_finished()
