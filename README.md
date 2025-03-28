@@ -1,14 +1,8 @@
 <div align="center">
     <a href="https://v2.nonebot.dev/store">
-    <img src="./.docs/NoneBotPlugin.svg" width="300" alt="logo"></a>
-</div>
+    <img src="https://raw.githubusercontent.com/fllesser/nonebot-plugin-template/refs/heads/resource/.docs/NoneBotPlugin.svg" width="310" alt="logo"></a>
 
-<div align="center">
-
-# nonebot-plugin-emojilike
-
-_✨ NoneBot onebotV11 点赞，表情回应插件 ✨_
-
+## ✨ Nonebot2 表情回应插件 ✨
 
 <a href="./LICENSE">
     <img src="https://img.shields.io/github/license/fllesser/nonebot-plugin-emojilike.svg" alt="license">
@@ -16,8 +10,13 @@ _✨ NoneBot onebotV11 点赞，表情回应插件 ✨_
 <a href="https://pypi.python.org/pypi/nonebot-plugin-emojilike">
     <img src="https://img.shields.io/pypi/v/nonebot-plugin-emojilike.svg" alt="pypi">
 </a>
-<img src="https://img.shields.io/badge/python-3.9+-blue.svg" alt="python">
-
+<img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="python">
+<a href="https://github.com/astral-sh/ruff">
+    <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json" alt="ruff">
+</a>
+<a href="https://github.com/astral-sh/uv">
+    <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json" alt="uv">
+</a>
 </div>
 
 
@@ -40,9 +39,9 @@ NoneBot onebotV11 点赞，表情回应插件
 在 nonebot2 项目的插件目录下, 打开命令行, 根据你使用的包管理器, 输入相应的安装命令
 
 <details>
-<summary>pip</summary>
+<summary>uv</summary>
 
-    pip install --upgrade nonebot-plugin-emojilike
+    uv add nonebot-plugin-emojilike
 </details>
 <details>
 <summary>pdm</summary>
@@ -54,11 +53,7 @@ NoneBot onebotV11 点赞，表情回应插件
 
     poetry add nonebot-plugin-emojilike
 </details>
-<details>
-<summary>conda</summary>
 
-    conda install nonebot-plugin-emojilike
-</details>
 
 打开 nonebot2 项目根目录下的 `pyproject.toml` 文件, 在 `[tool.nonebot]` 部分追加写入
 
@@ -69,12 +64,12 @@ NoneBot onebotV11 点赞，表情回应插件
 
 ## 🎉 使用
 ### 指令表
-| 指令 | 权限 | 需要@ | 范围 | 说明 |
-|:-----:|:----:|:----:|:----:|:----:|
-| 赞我 | 群员 | 否 | 群聊 | 顾名思义 |
-| 天天赞我 | 群员 | 否 | 群聊 | 顾名思义 |
+|   指令   | 权限  | 需要@ | 范围  |   说明   |
+| :------: | :---: | :---: | :---: | :------: |
+|   赞我   | 群员  |  否   | 群聊  | 顾名思义 |
+| 天天赞我 | 群员  |  否   | 群聊  | 顾名思义 |
 
 ## 效果图
-<img src=".docs/1.png">
-<img src=".docs/2.png">
-<img src=".docs/3.png">
+<img src="docs/1.png">
+<img src="docs/2.png">
+<img src="docs/3.png">
