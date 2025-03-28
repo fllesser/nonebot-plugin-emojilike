@@ -1,21 +1,25 @@
 import json
-import emoji
 
-from nonebot import logger, require, get_driver, get_bots
-from nonebot.plugin import PluginMetadata
-from nonebot.plugin.on import (
+import emoji
+from nonebot import (
+    get_bots,
+    get_driver,
+    logger,
     on_command,
     on_message,
+    require,
 )
-from nonebot.rule import Rule
-from nonebot.adapters.onebot.v11 import Bot, MessageEvent, GroupMessageEvent
+from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, MessageEvent
 from nonebot.adapters.onebot.v11.permission import GROUP
+from nonebot.plugin import PluginMetadata
+from nonebot.rule import Rule
+
 from .face import emoji_like_id_set
 
 require("nonebot_plugin_localstore")
 require("nonebot_plugin_apscheduler")
-from nonebot_plugin_apscheduler import scheduler  # noqa: E402
-import nonebot_plugin_localstore as store  # noqa: E402
+from nonebot_plugin_apscheduler import scheduler
+import nonebot_plugin_localstore as store
 
 __plugin_meta__ = PluginMetadata(
     name="名片赞，表情回应插件",
@@ -24,6 +28,11 @@ __plugin_meta__ = PluginMetadata(
     type="application",
     homepage="https://github.com/fllesser/nonebot-plugin-emojilike",
     supported_adapters={"~onebot.v11"},
+    extra={
+        "author": "fllesser",
+        "version": "0.2.0",
+        "repo": "https://github.com/fllesser/nonebot-plugin-emojilike",
+    },
 )
 
 
@@ -34,23 +43,18 @@ def contain_face(event: GroupMessageEvent) -> bool:
     )
 
 
-@on_message(
-    rule=Rule(contain_face), permission=GROUP, block=False, priority=999
-).handle()
+emojilike = on_message(rule=Rule(contain_face), permission=GROUP, block=False, priority=999)
+
+
+@emojilike.handle()
 async def _(bot: Bot, event: GroupMessageEvent):
     msg = event.get_message()
-    msg_emoji_id_set: set[int] = {
-        int(seg.data["id"]) for seg in msg if seg.type == "face"
-    } | {
-        ord(char)
-        for char in msg.extract_plain_text().strip()
-        if char in emoji.EMOJI_DATA
+    msg_emoji_id_set: set[int] = {int(seg.data["id"]) for seg in msg if seg.type == "face"} | {
+        ord(char) for char in msg.extract_plain_text().strip() if char in emoji.EMOJI_DATA
     }
-    for id in msg_emoji_id_set:
-        if id in emoji_like_id_set:
-            await bot.call_api(
-                "set_msg_emoji_like", message_id=event.message_id, emoji_id=id
-            )
+    common_emojis = msg_emoji_id_set & emoji_like_id_set
+    for emoji_id in common_emojis:
+        await bot.call_api("set_msg_emoji_like", message_id=event.message_id, emoji_id=emoji_id)
 
 
 @on_command(cmd="赞我", aliases={"草我"}, permission=GROUP).handle()
@@ -59,13 +63,9 @@ async def _(bot: Bot, event: GroupMessageEvent):
     try:
         for _ in range(5):
             await bot.send_like(user_id=event.user_id, times=10)
-            await bot.call_api(
-                "set_msg_emoji_like", message_id=event.message_id, emoji_id=id_set.pop()
-            )
+            await bot.call_api("set_msg_emoji_like", message_id=event.message_id, emoji_id=id_set.pop())
     except Exception as _:
-        await bot.call_api(
-            "set_msg_emoji_like", message_id=event.message_id, emoji_id="38"
-        )
+        await bot.call_api("set_msg_emoji_like", message_id=event.message_id, emoji_id="38")
 
 
 sub_like_set: set[int] = {1}
@@ -87,9 +87,7 @@ async def _(bot: Bot, event: MessageEvent):
     sub_like_set.add(event.user_id)
     data_file = store.get_plugin_data_file(sub_list_file)
     data_file.write_text(json.dumps(list(sub_like_set)))
-    await bot.call_api(
-        "set_msg_emoji_like", message_id=event.message_id, emoji_id="424"
-    )
+    await bot.call_api("set_msg_emoji_like", message_id=event.message_id, emoji_id="424")
 
 
 @scheduler.scheduled_job("cron", hour=8, minute=0, id="sub_card_like")

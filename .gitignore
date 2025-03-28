@@ -160,6 +160,8 @@ cython_debug/
 # LSP config files
 pyrightconfig.json
 
+bot.py
+
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
@@ -174,3 +176,9 @@ pyrightconfig.json
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/*.code-snippets
+
+# cache/
+# data/
+# config/
+
+.DS_Store
