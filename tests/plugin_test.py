@@ -34,6 +34,29 @@ async def test_emojilike(app: App):
 
     from nonebot_plugin_emojilike import emojilike
 
+    # only face id
+    event = make_onebot_msg(
+        Message("test" + MessageSegment.face(144) + "test" + MessageSegment.face(144) + "test")
+    )
+    async with app.test_matcher(emojilike) as ctx:
+        adapter = nonebot.get_adapter(OnebotV11Adapter)
+        bot = ctx.create_bot(base=Bot, adapter=adapter)
+        ctx.receive_event(bot, event)
+        ctx.should_call_api("set_msg_emoji_like", data={"message_id": 12345678, "emoji_id": 144})
+        logger.success("call api | set_msg_emoji_like emoji_id=144")
+        ctx.should_finished()
+
+    # only unicode emoji
+    event = make_onebot_msg(Message("test❔❔test❔❔test"))
+    async with app.test_matcher(emojilike) as ctx:
+        adapter = nonebot.get_adapter(OnebotV11Adapter)
+        bot = ctx.create_bot(base=Bot, adapter=adapter)
+        ctx.receive_event(bot, event)
+        ctx.should_call_api("set_msg_emoji_like", data={"message_id": 12345678, "emoji_id": ord("❔")})
+        logger.success(f"call api | set_msg_emoji_like emoji_id={ord('❔')}")
+        ctx.should_finished()
+
+    # face id 和 unicode emoji 混合
     event = make_onebot_msg(
         Message("test❔❔test❔❔test" + MessageSegment.face(144) + "test" + MessageSegment.face(144))
     )

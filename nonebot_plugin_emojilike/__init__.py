@@ -30,7 +30,7 @@ __plugin_meta__ = PluginMetadata(
     supported_adapters={"~onebot.v11"},
     extra={
         "author": "fllesser",
-        "version": "0.2.0",
+        "version": "0.2.1",
         "repo": "https://github.com/fllesser/nonebot-plugin-emojilike",
     },
 )
@@ -38,9 +38,7 @@ __plugin_meta__ = PluginMetadata(
 
 def contain_emoji(event: GroupMessageEvent) -> bool:
     msg = event.get_message()
-    return any(seg.type == "face" for seg in msg) or any(
-        char in emoji.EMOJI_DATA for char in msg.extract_plain_text().strip()
-    )
+    return msg.has("face") or any(char in emoji.EMOJI_DATA for char in msg.extract_plain_text().strip())
 
 
 emojilike = on_message(rule=Rule(contain_emoji), permission=GROUP, block=False, priority=999)
