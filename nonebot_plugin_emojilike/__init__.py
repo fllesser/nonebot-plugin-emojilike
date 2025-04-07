@@ -36,24 +36,23 @@ __plugin_meta__ = PluginMetadata(
 )
 
 
-def contain_face(event: GroupMessageEvent) -> bool:
+def contain_emoji(event: GroupMessageEvent) -> bool:
     msg = event.get_message()
     return any(seg.type == "face" for seg in msg) or any(
         char in emoji.EMOJI_DATA for char in msg.extract_plain_text().strip()
     )
 
 
-emojilike = on_message(rule=Rule(contain_face), permission=GROUP, block=False, priority=999)
+emojilike = on_message(rule=Rule(contain_emoji), permission=GROUP, block=False, priority=999)
 
 
 @emojilike.handle()
 async def _(bot: Bot, event: GroupMessageEvent):
     msg = event.get_message()
-    msg_emoji_id_set: set[int] = {int(seg.data["id"]) for seg in msg if seg.type == "face"} | {
+    emoji_ids_in_msg = {int(seg.data["id"]) for seg in msg["face"]} | {
         ord(char) for char in msg.extract_plain_text().strip() if char in emoji.EMOJI_DATA
     }
-    common_emojis = msg_emoji_id_set & emoji_like_id_set
-    for emoji_id in common_emojis:
+    for emoji_id in emoji_ids_in_msg & emoji_like_id_set:
         await bot.call_api("set_msg_emoji_like", message_id=event.message_id, emoji_id=emoji_id)
 
 
@@ -64,7 +63,7 @@ async def _(bot: Bot, event: GroupMessageEvent):
         for _ in range(5):
             await bot.send_like(user_id=event.user_id, times=10)
             await bot.call_api("set_msg_emoji_like", message_id=event.message_id, emoji_id=id_set.pop())
-    except Exception as _:
+    except Exception:
         await bot.call_api("set_msg_emoji_like", message_id=event.message_id, emoji_id="38")
 
 
