@@ -4,8 +4,8 @@
 
 ## ✨ Nonebot2 表情回应插件 ✨
 
-<a href="./LICENSE">
-    <img src="https://img.shields.io/github/license/fllesser/nonebot-plugin-emojilike.svg" alt="license">
+<a href="https://raw.githubusercontent.com/fllesser/nonebot-plugin-emojilike/master/LICENSE">
+    <img src="https://img.shields.io/github/license/fllesser/nonebot-plugin-emojilike" alt="license">
 </a>
 <a href="https://pypi.python.org/pypi/nonebot-plugin-emojilike">
     <img src="https://img.shields.io/pypi/v/nonebot-plugin-emojilike.svg" alt="pypi">
