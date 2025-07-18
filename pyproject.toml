@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-emojilike"
-version = "0.2.1"
+version = "0.2.2"
 description = "nonebot2 名片赞，表情回应插件"
 authors = [{ name = "fllesser", email = "fllessive@gmail.com" }]
 readme = "README.md"
@@ -25,7 +25,7 @@ test = [
     "nonebot2[fastapi]>=2.4.2,<3.0.0",
     "nonebot-adapter-onebot>=2.4.6,<3.0.0",
     "nonebug>=0.3.7,<1.0.0",
-    "pytest-xdist>=3.6.1,<4.0.0",
+    "pytest-xdist>=3.8.0,<4.0.0",
     "pytest-asyncio>=1.1.0,<1.2.0",
 ]
 
@@ -33,7 +33,7 @@ test = [
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "session"
-pythonpath = [".", "nonebot_plugin_template", "tests"]
+pythonpath = ["src"]
 addopts = [
     "-v",               # 详细输出
     "-s",               # 显示打印信息
@@ -43,6 +43,7 @@ addopts = [
     # "--doctest-modules", # 运行文档测试
     "--import-mode=prepend", # 导入模式
 ]
+
 
 [tool.ruff]
 line-length = 120
@@ -76,6 +77,7 @@ ignore = [
     "RUF003", # ambiguous-unicode-character-comment
     "W191",   # indentation contains tabs
     # "I001",   # isort: imports are incorrectly sorted
+    "TID252", # 相对导入
 ]
 
 
@@ -98,10 +100,14 @@ pythonPlatform = "All"
 defineConstant = { PYDANTIC_V2 = true }
 executionEnvironments = [
     { root = "./tests", extraPaths = [
-        "./",
+        "./src",
     ] },
-    { root = "./" },
+    { root = "./src" },
 ]
 typeCheckingMode = "standard"
 reportShadowedImports = false
 disableBytesTypePromotions = true
+
+[build-system]
+requires = ["uv_build>=0.8.0,<0.9.0"]
+build-backend = "uv_build"

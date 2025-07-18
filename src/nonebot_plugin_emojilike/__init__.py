@@ -30,7 +30,7 @@ __plugin_meta__ = PluginMetadata(
     supported_adapters={"~onebot.v11"},
     extra={
         "author": "fllesser",
-        "version": "0.2.1",
+        "version": "0.2.2",
         "repo": "https://github.com/fllesser/nonebot-plugin-emojilike",
     },
 )
