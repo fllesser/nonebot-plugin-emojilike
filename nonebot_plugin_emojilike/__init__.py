@@ -64,13 +64,15 @@ async def _(bot: Bot, event: GroupMessageEvent):
     except Exception:
         await bot.call_api("set_msg_emoji_like", message_id=event.message_id, emoji_id="38")
 
-
-sub_like_set: set[int] = {1}
+# 每日赞列表
+sub_like_set: set[int] = set()
+# 每日赞列表文件名
 sub_list_file = "sub_list.json"
 
 
 @get_driver().on_startup
 async def _():
+    """初始化每日赞列表"""
     data_file = store.get_plugin_data_file(sub_list_file)
     if not data_file.exists():
         data_file.write_text(json.dumps([]))
