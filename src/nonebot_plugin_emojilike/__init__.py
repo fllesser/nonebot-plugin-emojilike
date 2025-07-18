@@ -30,7 +30,7 @@ __plugin_meta__ = PluginMetadata(
     supported_adapters={"~onebot.v11"},
     extra={
         "author": "fllesser",
-        "version": "0.2.1",
+        "version": "0.2.2",
         "repo": "https://github.com/fllesser/nonebot-plugin-emojilike",
     },
 )
@@ -63,6 +63,7 @@ async def _(bot: Bot, event: GroupMessageEvent):
             await bot.call_api("set_msg_emoji_like", message_id=event.message_id, emoji_id=id_set.pop())
     except Exception:
         await bot.call_api("set_msg_emoji_like", message_id=event.message_id, emoji_id="38")
+
 
 # 每日赞列表
 sub_like_set: set[int] = set()
