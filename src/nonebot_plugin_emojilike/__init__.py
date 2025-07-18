@@ -64,6 +64,7 @@ async def _(bot: Bot, event: GroupMessageEvent):
     except Exception:
         await bot.call_api("set_msg_emoji_like", message_id=event.message_id, emoji_id="38")
 
+
 # 每日赞列表
 sub_like_set: set[int] = set()
 # 每日赞列表文件名
