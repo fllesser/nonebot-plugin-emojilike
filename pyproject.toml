@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-emojilike"
-version = "0.2.2"
+version = "0.2.3"
 description = "nonebot2 名片赞，表情回应插件"
 authors = [{ name = "fllesser", email = "fllessive@gmail.com" }]
 readme = "README.md"
@@ -137,7 +137,7 @@ build-backend = "uv_build"
 
 
 [tool.bumpversion]
-current_version = "0.2.2"
+current_version = "0.2.3"
 commit = true
 message = "🔖 release: bump vesion from {current_version} to {new_version}"
 tag = true
