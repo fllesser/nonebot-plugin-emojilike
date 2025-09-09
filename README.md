@@ -17,6 +17,12 @@
 <a href="https://github.com/astral-sh/uv">
     <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json" alt="uv">
 </a>
+<a href="https://results.pre-commit.ci/latest/github/fllesser/nonebot-plugin-resolver2/master">
+    <img src="https://results.pre-commit.ci/badge/github/fllesser/nonebot-plugin-resolver2/master.svg" alt="pre-commit" />
+</a>
+<a href="https://codecov.io/gh/fllesser/nonebot-plugin-emojilike" > 
+    <img src="https://codecov.io/gh/fllesser/nonebot-plugin-emojilike/graph/badge.svg?token=OC91SWU8YE"/> 
+</a>
 </div>
 
 
