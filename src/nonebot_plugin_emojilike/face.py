@@ -1,4 +1,4 @@
-emoji_like_id_set: set[int] = {
+EMOJI_LIKE_ID_SET: set[int] = {
     4,
     5,
     8,
