@@ -1,4 +1,4 @@
-name: Code Coverage
+name: CI
 
 on:
   push:
@@ -12,6 +12,13 @@ on:
       - "uv.lock"
 
 jobs:
+
+  typos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5 # v5
+      - uses: crate-ci/typos@master
+
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -46,7 +53,7 @@ jobs:
         run: uv sync --no-dev
 
       - name: Run Pytest
-        run: uv run --no-sync poe test
+        run: uv run --no-sync pytest --cov=src --cov-report xml --junitxml=./junit.xml -n auto
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
