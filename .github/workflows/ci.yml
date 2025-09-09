@@ -50,7 +50,7 @@ jobs:
           version: "latest"
 
       - name: Install Dependencies for test group
-        run: uv sync --no-dev
+        run: uv sync --no-dev --locked
 
       - name: Run Pytest
         run: uv run --no-sync pytest --cov=src --cov-report xml --junitxml=./junit.xml -n auto
